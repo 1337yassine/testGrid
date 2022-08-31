@@ -1,0 +1,17 @@
+﻿@page "/Passenger"
+@using testGrid.Data
+@inject PassengerService passengerService
+<PageTitle>Counter</PageTitle>
+
+
+
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        string page = "0";
+        string size = "10";
+        var Passengers = await passengerService.GetPassengersAsync(page, size);
+        var m = Passengers.data;
+    }
+}

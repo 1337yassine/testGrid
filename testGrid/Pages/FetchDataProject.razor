@@ -1,0 +1,51 @@
+﻿@page "/FetchDataProject"
+
+<PageTitle>Weather forecast</PageTitle>
+
+@using testGrid.Data
+@inject ProjectService projectService
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from a service.</p>
+
+@if (Projects == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <MudDataGrid Items="@Projects">
+        <Columns>
+            <Column T="Project" Field="Id"/>
+            <Column T="Project" Field="Label" />
+            <Column T="Project" Field="Perimeter" />
+            <Column T="Project" Field="Responsible" />
+            
+            <Column T="MudSelect<string>" Title="Emails">
+                <MudSelect T="string" Label="emails" Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter">
+
+                    @foreach (var item in emails)
+                    {
+                        <MudSelectItem Value="item" />
+                    }
+                </MudSelect>
+           </Column>
+        </Columns>
+    </MudDataGrid>
+
+    
+}
+
+@code {
+    private List<Project> Projects = new();
+    private List<string> emails =new();
+
+    private int index = 0;
+    protected override async Task OnInitializedAsync()
+    {
+        Projects = await projectService.GetProjectsAsync();
+        emails = Projects.Select(x => x.Email).FirstOrDefault();
+       
+    }
+}

@@ -1,0 +1,35 @@
+﻿@page "/fetchdata"
+
+<PageTitle>Weather forecast</PageTitle>
+
+@using testGrid.Data
+@inject WeatherForecastService ForecastService
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from a service.</p>
+
+@if (forecasts == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <MudDataGrid Items="@forecasts">
+        <Columns>
+            <Column T="WeatherForecast" Field="Date"/>
+            <Column T="WeatherForecast" Field="TemperatureC" />
+            <Column T="WeatherForecast" Field="TemperatureC" />
+            <Column T="WeatherForecast" Field="Summary" />
+        </Columns>
+    </MudDataGrid>
+}
+
+@code {
+    private List<WeatherForecast> forecasts = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        forecasts = await ForecastService.GetForecastAsyncs(DateTime.Now);
+    }
+}
